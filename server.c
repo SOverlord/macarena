@@ -7,6 +7,8 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 
+
+
 void error(char *msg)
 {
     perror(msg);
@@ -60,57 +62,88 @@ int main(int argc, char *argv[])
      
      listen(sockfd,5);
      clilen = sizeof(cli_addr);
-     printf("%d\n", i);
-     while(i<4){
+     printf("Inicio: %d\n", i);
+     while(i<2){
         if(i==0){
             newsockfd = accept(sockfd, (struct sockaddr *) &cli_addr, &clilen);
             if (newsockfd < 0){
                 error("ERROR on accept");
-            }else{i++;printf("%d\n", i);}
+            }else{
+                i++;
+                write(newsockfd2,"H",1);
+                printf("Cliente %d conectado\n", i);
+            }
         }
         if(i==1){
             newsockfd2 = accept(sockfd, (struct sockaddr *) &cli_addr, &clilen);
             if (newsockfd2 < 0){
                 error("ERROR on accept");
-            }else{i++;printf("%d\n", i);}
+            }else{
+                i++;
+                write(newsockfd2,"O",2);
+                printf("Cliente %d conectado\n", i);
+            }
         }
+        
         if(i==2){
-            newsockfd3 = accept(sockfd, (struct sockaddr *) &cli_addr, &clilen);
-            if (newsockfd3 < 0){
-                error("ERROR on accept");
-            }else{i++;printf("%d\n", i);}
+            printf("Overflow de clientes: %d\n", i);
+            break;
+            /*
+                newsockfd3 = accept(sockfd, (struct sockaddr *) &cli_addr, &clilen);
+                if (newsockfd3 < 0){
+                    error("ERROR on accept");
+                }else{
+                    i++;
+                    write(newsockfd2,"L",3);
+                    printf("%d\n", i);
+                }
+            */
         }
+        /*
         if(i==3){
             newsockfd4 = accept(sockfd, (struct sockaddr *) &cli_addr, &clilen);
             if (newsockfd4 < 0){
                 error("ERROR on accept");
-            }else{i++;printf("%d\n", i);}
-        }
-     }
-     if (i==4){
-     do{
-        time_t epoch_time;
-        struct tm *tm_p;
-        epoch_time = time( NULL );
-        tm_p = localtime( &epoch_time );
-        int hora = tm_p->tm_hour;
-        int min  = tm_p->tm_min;
-        int seg  = tm_p->tm_sec;
-        char dhora[] = {(hora/10)+48};
-        char dmin[] = {(min/10)+48};
-        char dseg[]  = {(seg/10)+48};
-        char uhora[] = {(hora%10)+48};
-        char umin[] = {(min%10)+48};
-        char useg[]  = {(seg%10)+48};
-     //n = read(newsockfd,buffer,255);
-     //if (n < 0) error("ERROR reading from socket");
-     //printf("Here is the message: %s\n",buffer);
-        
-        n = write(newsockfd,dmin,1);
-        n2 = write(newsockfd2,umin,1);
-        n3 = write(newsockfd3,dseg,1);
-        n4 = write(newsockfd4,useg,1);
-        waitFor(5);
-     }while(1==1);
+            }else{
+                i++;
+                write(newsockfd2,"A",4);
+                printf("%d\n", i);
+            }
+        }*/
+    }
+    if (i<=2){
+        do{
+            time_t epoch_time;
+            struct tm *tm_p;
+            epoch_time = time( NULL );
+            tm_p = localtime( &epoch_time );
+            int hora = tm_p->tm_hour;
+            int min  = tm_p->tm_min;
+            int seg  = tm_p->tm_sec;
+            /*
+            char dhora[] = {(hora/10)+48};
+            char dmin[] = {(min/10)+48};
+            char dseg[]  = {(seg/10)+48};
+            char uhora[] = {(hora%10)+48};
+            char umin[] = {(min%10)+48};
+            char useg[]  = {(seg%10)+48};
+            */
+            char msg1 = "hola";
+            char msg2 = "mundo";
+         //n = read(newsockfd,buffer,255);
+         //if (n < 0) error("ERROR reading from socket");
+         //printf("Here is the message: %s\n",buffer);
+            
+            n = write(newsockfd, msg1, 1);
+            n2 = write(newsockfd2, msg2, 2);
+            //n = write(newsockfd,dmin,1);
+            //n2 = write(newsockfd2,umin,1);
+            //n3 = write(newsockfd3,dseg,1);
+            //n4 = write(newsockfd4,useg,1);
+            waitFor(1);
+        }while(1==1);
+    }
+    else{
+        printf("Overflow de clientes: %d\n", i);
     }
 }
