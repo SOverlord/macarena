@@ -1,13 +1,13 @@
 all: servidor cliente
 
 servidor:
-	gcc -w -o srv server.c
+	gcc -w -o server server.c
 
 cliente:
-	gcc -w -o clt client.c
+	gcc -w -o client client.c
 
 clean:
-	rm -rf srv clt
+	rm -rf server client
 
 git:
 	$ git add .

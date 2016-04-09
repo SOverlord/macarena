@@ -110,7 +110,7 @@ int main(int argc, char *argv[])
         n2 = write(newsockfd2,umin,1);
         n3 = write(newsockfd3,dseg,1);
         n4 = write(newsockfd4,useg,1);
-        waitFor(1);
+        waitFor(5);
      }while(1==1);
     }
 }
