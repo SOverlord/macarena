@@ -1,10 +1,10 @@
 all: servidor cliente
 
 servidor:
-	gcc -o srv server.c
+	gcc -w -o srv server.c
 
 cliente:
-	gcc -o clt client.c
+	gcc -w -o clt client.c
 
 clean:
 	rm -rf srv clt
